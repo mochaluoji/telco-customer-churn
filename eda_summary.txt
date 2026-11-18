@@ -1,0 +1,103 @@
+======================================================================
+[EDA] n = 7043, churn rate = 26.54% (imbalance ratio 1 : 2.8)
+======================================================================
+
+[1] numeric summary
+       Tenure Months  Monthly Charges  Total Charges  ServiceCount
+count        7043.00          7043.00        7043.00       7043.00
+mean           32.37            64.76        2279.73          3.36
+std            24.56            30.09        2266.79          2.06
+min             0.00            18.25           0.00          0.00
+25%             9.00            35.50         398.55          1.00
+50%            29.00            70.35        1394.55          3.00
+75%            55.00            89.85        3786.60          5.00
+max            72.00           118.75        8684.80          8.00
+  -> figures/01_numeric_distributions.png
+
+[2] numeric features by churn (mean)
+          Tenure Months  Monthly Charges  Total Charges  ServiceCount
+No churn          37.57            61.27        2549.91          3.45
+Churn             17.98            74.44        1531.80          3.13
+  -> figures/02_numeric_vs_churn.png
+
+[3] churn rate by category
+
+  Contract
+                   n  churn_rate
+Contract                        
+Month-to-month  3875        42.7
+One year        1473        11.3
+Two year        1695         2.8
+
+  Internet Service
+                     n  churn_rate
+Internet Service                  
+Fiber optic       3096        41.9
+DSL               2421        19.0
+No                1526         7.4
+
+  Payment Method
+                              n  churn_rate
+Payment Method                             
+Electronic check           2365        45.3
+Mailed check               1612        19.1
+Bank transfer (automatic)  1544        16.7
+Credit card (automatic)    1522        15.2
+
+  Paperless Billing
+                      n  churn_rate
+Paperless Billing                  
+1                  4171        33.6
+0                  2872        16.3
+
+  Tech Support
+                 n  churn_rate
+Tech Support                  
+0             4999        31.2
+1             2044        15.2
+
+  Online Security
+                    n  churn_rate
+Online Security                  
+0                5024        31.3
+1                2019        14.6
+  -> figures/03_churn_rate_by_category.png
+
+[4] tenure buckets
+                 n  rate
+TenureBucket            
+0-6           1481  52.9
+7-12           705  35.9
+13-24         1024  28.7
+25-48         1594  20.4
+49-72         2239   9.5
+  -> figures/04_churn_rate_by_tenure.png
+
+  churn rate, Contract x Internet Service
+Internet Service   DSL  Fiber optic    No
+Contract                                 
+Month-to-month    32.2         54.6  18.9
+One year           9.3         19.3   2.5
+Two year           1.9          7.2   0.8
+  -> figures/05_heatmap_contract_internet.png
+
+[5] Pearson correlation with churn
+Tenure Months     -0.352
+Monthly Charges    0.193
+Total Charges     -0.198
+ServiceCount      -0.067
+Churn              1.000
+  -> figures/06_correlation_matrix.png
+  -> figures/07_class_balance.png
+
+======================================================================
+[KEY FINDINGS FOR SLIDES]
+======================================================================
+1. Imbalance: 26.5% churn -> use AUC-ROC / F1, not accuracy; stratified split required.
+2. Contract is the strongest categorical driver: Month-to-month churn 42.7% vs 2.8% for the lowest group.
+3. Internet Service: Fiber optic churn 41.9%; customers without internet churn only 7.4%.
+4. Payment: Electronic check churn 45.3%, roughly 3x the automatic-payment rate.
+5. Tenure: churned customers average 18.0 months vs 37.6 months for stayers; churn rate in first 6 months = 52.9%.
+6. Monthly Charges: churners pay $74.44 vs $61.27 (high price + short tenure = high risk).
+7. Multicollinearity: Total Charges ~ Monthly Charges x Tenure (r = 1.00); flag for the robustness check / consider dropping Total Charges.
+8. Leakage removed before EDA: Churn Score, Churn Reason, CLTV, Churn Label. Churn Reason is post-hoc only and must never enter a model.

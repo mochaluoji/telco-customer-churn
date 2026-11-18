@@ -1,0 +1,54 @@
+[LOAD] raw shape = (7043, 33)
+
+[DROP] id        : CustomerID
+[DROP] constant  : Count, Country, State
+[DROP] leakage   : Churn Score, Churn Reason, Churn Label, CLTV
+[DROP] geo       : City, Zip Code, Lat Long, Latitude, Longitude
+[DROP] remaining shape = (7043, 20)
+
+[TOTAL CHARGES] non-numeric/blank rows = 11
+[TOTAL CHARGES] their Tenure Months values = [0]
+[TOTAL CHARGES] imputed 11 blanks as 0.0 (zero-tenure customers, verifiable assumption)
+[TOTAL CHARGES] dtype now = float64, missing = 0
+[COLLAPSE] Multiple Lines     levels 3 -> 2  {'No': 4072, 'Yes': 2971}
+[COLLAPSE] Online Security    levels 3 -> 2  {'No': 5024, 'Yes': 2019}
+[COLLAPSE] Online Backup      levels 3 -> 2  {'No': 4614, 'Yes': 2429}
+[COLLAPSE] Device Protection  levels 3 -> 2  {'No': 4621, 'Yes': 2422}
+[COLLAPSE] Tech Support       levels 3 -> 2  {'No': 4999, 'Yes': 2044}
+[COLLAPSE] Streaming TV       levels 3 -> 2  {'No': 4336, 'Yes': 2707}
+[COLLAPSE] Streaming Movies   levels 3 -> 2  {'No': 4311, 'Yes': 2732}
+
+[ENCODE] binary Yes/No -> 1/0 (12 flags) + Gender Female=0/Male=1
+[TARGET] Churn: 1 = 1869 (26.54%), 0 = 5174 (73.46%)
+[KEEP] multi-level (encoded later in build_features): Internet Service, Contract, Payment Method
+
+[CHECK] duplicates (full row) = 22
+[CHECK] total missing values = 0
+[CHECK] dtypes:
+Gender                  int8
+Senior Citizen          int8
+Partner                 int8
+Dependents              int8
+Tenure Months          int64
+Phone Service           int8
+Multiple Lines          int8
+Internet Service         str
+Online Security         int8
+Online Backup           int8
+Device Protection       int8
+Tech Support            int8
+Streaming TV            int8
+Streaming Movies        int8
+Contract                 str
+Paperless Billing       int8
+Payment Method           str
+Monthly Charges      float64
+Total Charges        float64
+Churn                   int8
+
+[CHECK] |TotalCharges - Monthly*Tenure| : median = 28.60, 95th pct = 147.05, max = 373.25
+[CHECK] rows where gap > 100 : 873  (single-customer mid-cycle price changes; not a data error)
+[FEATURE] ServiceCount = sum of the 8 add-on flags (range 0-8)
+
+[SAVE] telco_clean.csv  shape = (7043, 21)
+======================================================================
