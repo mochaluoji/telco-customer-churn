@@ -2,9 +2,9 @@ import re
 import numpy as np
 import pandas as pd
 
-RAW = "Telco_customer_churn.xlsx"
-OUT_DATA = "telco_clean.csv"
-OUT_REPORT = "cleaning_report.txt"
+RAW = "data/raw/Telco_customer_churn.xlsx"
+OUT_DATA = "data/processed/telco_clean.csv"
+OUT_REPORT = "outputs/cleaning_report.txt"
 
 lines = []
 
