@@ -10,7 +10,7 @@ sns.set_theme(style="whitegrid", palette="muted")
 FIG = "figures"
 os.makedirs(FIG, exist_ok=True)
 
-df = pd.read_csv("telco_clean.csv")
+df = pd.read_csv("data/processed/telco_clean.csv")
 lines = []
 
 
@@ -168,7 +168,7 @@ log("7. Multicollinearity: Total Charges ~ Monthly Charges x Tenure "
 log("8. Leakage removed before EDA: Churn Score, Churn Reason, CLTV, "
     "Churn Label. Churn Reason is post-hoc only and must never enter a model.")
 
-with open("eda_summary.txt", "w", encoding="utf-8") as f:
+with open("outputs/eda_summary.txt", "w", encoding="utf-8") as f:
     f.write("\n".join(lines))
 print("\nsummary -> eda_summary.txt")
 

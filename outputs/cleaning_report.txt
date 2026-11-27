@@ -50,5 +50,5 @@ Churn                   int8
 [CHECK] rows where gap > 100 : 873  (single-customer mid-cycle price changes; not a data error)
 [FEATURE] ServiceCount = sum of the 8 add-on flags (range 0-8)
 
-[SAVE] telco_clean.csv  shape = (7043, 21)
+[SAVE] data/processed/telco_clean.csv  shape = (7043, 21)
 ======================================================================
